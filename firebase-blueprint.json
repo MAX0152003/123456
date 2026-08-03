@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Represents a user profile on ClassPulse.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique user identifier." },
+        "name": { "type": "string", "description": "The full name of the user." },
+        "email": { "type": "string", "format": "email", "description": "The email address." },
+        "role": { "type": "string", "enum": ["student", "faculty", "admin"], "description": "The access role." },
+        "avatar": { "type": "string", "description": "Avatar URL." },
+        "studentId": { "type": "string", "description": "Institutional Student ID, if student." },
+        "facultyId": { "type": "string", "description": "Institutional Faculty ID, if faculty." },
+        "department": { "type": "string", "description": "Academic department." },
+        "bio": { "type": "string", "description": "User profile biography." },
+        "phone": { "type": "string", "description": "Phone contact number." },
+        "joinedAt": { "type": "string", "description": "ISO date of registration." }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "ClassSession": {
+      "title": "ClassSession",
+      "description": "Represents an academic course class session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "room": { "type": "string" },
+        "days": { "type": "array" },
+        "facultyName": { "type": "string" },
+        "facultyId": { "type": "string" },
+        "credits": { "type": "number" },
+        "facultyStatusUpdate": { "type": "string", "enum": ["none", "attend", "cancel", "late"] },
+        "tempRoom": { "type": "string" },
+        "lastUpdateTimestamp": { "type": "number" },
+        "qrToken": { "type": "string" },
+        "qrGeneratedAt": { "type": "number" }
+      },
+      "required": ["id", "code", "name", "startTime", "endTime", "room", "days", "facultyName", "facultyId"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Represents an attendance record logged by a student or scanned.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "className": { "type": "string" },
+        "classCode": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "late", "absent"] },
+        "role": { "type": "string", "enum": ["student", "faculty", "admin"] },
+        "studentName": { "type": "string" },
+        "studentId": { "type": "string" }
+      },
+      "required": ["id", "classId", "className", "classCode", "date", "time", "status", "role"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Represents an internal messaging system communication.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderRole": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "receiverName": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "senderId", "senderName", "senderRole", "receiverId", "receiverName", "message", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles database."
+    },
+    "/classes/{classId}": {
+      "schema": "ClassSession",
+      "description": "Academic course class sessions."
+    },
+    "/records/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Attendance history logs."
+    },
+    "/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Internal classroom and chat channel messages."
+    }
+  }
+}
